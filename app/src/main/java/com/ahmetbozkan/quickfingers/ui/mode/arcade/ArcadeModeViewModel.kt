@@ -16,7 +16,9 @@ class ArcadeModeViewModel @Inject constructor(
     private val repository: GameRepository
 ) : ViewModel() {
 
-    private var timerScope: CoroutineScope = CoroutineScope(viewModelScope.coroutineContext)
+    private var timerScope: CoroutineScope = CoroutineScope(
+        viewModelScope.coroutineContext + Dispatchers.Default
+    )
 
     private val _trWord = MutableLiveData<String>()
     val randomTrWord: LiveData<String> get() = _trWord
@@ -58,11 +60,11 @@ class ArcadeModeViewModel @Inject constructor(
     }
 
     private fun startTimer() = timerScope.launch {
-        while (time.value!! > 0) {
+        while (time.value!! >= 0) {
             if(isStarted) {
-                _time.value = time.value?.minus(1)
-                timePassed.value = timePassed.value?.plus(1)
-                delay(1000)
+                _time.postValue(time.value!! - 1)
+                timePassed.postValue(timePassed.value!! + 1)
+                delay(1000L)
             }
         }
         cancel()
@@ -70,13 +72,12 @@ class ArcadeModeViewModel @Inject constructor(
 
     fun onReplayClick() {
         isStarted = false
-        timerScope.cancel()
         getRandomWord()
 
         correct.value = 0
         wrong.value = 0
         _score.value = 0
-        timePassed.value = 1
+        timePassed.value = 0
         _time.value = 10
     }
 
