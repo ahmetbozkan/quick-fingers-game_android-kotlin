@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/howToPlayFragment"
+        android:icon="@drawable/ic_info"
+        android:title="How to play?"
+        android:menuCategory="secondary"
+        app:showAsAction="always" />
+
+</menu>
