@@ -2,7 +2,6 @@ package com.ahmetbozkan.quickfingers.base
 
 import android.os.Bundle
 import android.view.*
-import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.ahmetbozkan.quickfingers.BR
-import com.ahmetbozkan.quickfingers.ui.toplevel.game.StartGameFragment
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
 

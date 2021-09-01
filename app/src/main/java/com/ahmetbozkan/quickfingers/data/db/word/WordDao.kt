@@ -20,4 +20,5 @@ interface WordDao {
     suspend fun getRandomWord(
         language: String
     ): String
+
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.ahmetbozkan.quickfingers.ui.mode.arcade.ArcadeModeViewModel" />
+            type="com.ahmetbozkan.quickfingers.ui.arcade.ArcadeModeViewModel" />
     </data>
 
     <LinearLayout

@@ -2,7 +2,7 @@ package com.ahmetbozkan.quickfingers.data.db.result
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ahmetbozkan.quickfingers.data.GameMode
+import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
 
 @Dao

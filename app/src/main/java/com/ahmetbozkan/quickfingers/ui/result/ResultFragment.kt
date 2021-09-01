@@ -1,6 +1,5 @@
 package com.ahmetbozkan.quickfingers.ui.result
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,7 +12,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ahmetbozkan.quickfingers.R
-import com.ahmetbozkan.quickfingers.data.GameMode
+import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
 import com.ahmetbozkan.quickfingers.databinding.FragmentResultBinding
 import dagger.hilt.android.AndroidEntryPoint
