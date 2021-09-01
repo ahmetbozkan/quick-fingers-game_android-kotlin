@@ -1,11 +1,13 @@
 package com.ahmetbozkan.quickfingers.ui.arcade
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
 import com.ahmetbozkan.quickfingers.data.usecase.word.GetWordUseCase
 import com.ahmetbozkan.quickfingers.util.Constants
 import com.ahmetbozkan.quickfingers.util.SingleLiveEvent
+import com.ahmetbozkan.quickfingers.util.extension.formatEndingDecimals
 import com.ahmetbozkan.quickfingers.util.extension.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -20,7 +22,7 @@ class ArcadeModeViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        const val TIME_STATE = "time_State"
+        const val TIME_STATE = "time_state"
     }
 
     private var timerJob: Job? = null
@@ -54,7 +56,7 @@ class ArcadeModeViewModel @Inject constructor(
     }
 
     fun onEnterPressed(word: String) {
-        if(!isStarted) {
+        if (!isStarted) {
             startTimer()
             isStarted = true
         }
@@ -65,7 +67,7 @@ class ArcadeModeViewModel @Inject constructor(
 
     private fun startTimer() {
         timerJob = viewModelScope.launch {
-            while(_time.value!! > 0) {
+            while (_time.value!! > 0) {
                 decreaseTimer()
                 delay(Constants.COUNTDOWN_INTERVAL)
             }
@@ -75,12 +77,11 @@ class ArcadeModeViewModel @Inject constructor(
     }
 
     private fun evaluateWordInput(word: String) {
-        if(word.trim() == _word.value) {
+        if (word.trim() == _word.value) {
             correct.value = (correct.value!! + 1)
             _score.value = (_score.value!! + 2)
             incrementTimer()
-        }
-        else {
+        } else {
             wrong.value = (wrong.value!! + 1)
             _score.value = (_score.value!! - 1)
         }
@@ -116,16 +117,16 @@ class ArcadeModeViewModel @Inject constructor(
 
     private fun calculateResult(): Result {
         val total = wrong.value?.plus(correct.value!!)!!
-        val accuracy: Double = String.format(
-            "%.2f", (correct.value?.toDouble()!! / total) * 100
-        ).toDouble()
+
+        val accuracy: Double = (correct.value?.toDouble()!! * 100) / total
+        val accuracyFormatted = accuracy.formatEndingDecimals()
 
         return Result(
             gameMode = GameMode.ARCADE,
             score = score.value.orZero(),
             correct = correct.value.orZero(),
             wrong = wrong.value.orZero(),
-            accuracy = accuracy,
+            accuracy = accuracyFormatted,
             timePassed = timePassed.value.orZero()
         )
     }

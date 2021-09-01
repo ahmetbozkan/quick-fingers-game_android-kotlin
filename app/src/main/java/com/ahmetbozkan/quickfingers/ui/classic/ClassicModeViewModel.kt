@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.repository.word.WordRepositoryImpl
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.util.extension.formatEndingDecimals
 import com.ahmetbozkan.quickfingers.util.extension.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -67,9 +68,9 @@ class ClassicModeViewModel @Inject constructor(
 
     private fun calculateResult(): Result {
         val total = wrong.value?.plus(correct.value!!)!!
-        val accuracy: Double = String.format(
-            "%.2f", (correct.value?.toDouble()!! / total) * 100
-        ).toDouble()
+
+        val accuracy: Double = (correct.value?.toDouble()!! / total) * 100
+        val accuracyFormatted = accuracy.formatEndingDecimals()
 
         val wpm = correct.value!! - wrong.value!!
 
@@ -78,7 +79,7 @@ class ClassicModeViewModel @Inject constructor(
             score = score.value.orZero(),
             correct = correct.value.orZero(),
             wrong = wrong.value.orZero(),
-            accuracy = accuracy,
+            accuracy = accuracyFormatted,
             wordsPerMinute = if (wpm >= 0) wpm else 0
         )
     }
