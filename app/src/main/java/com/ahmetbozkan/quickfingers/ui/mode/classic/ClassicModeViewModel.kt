@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ahmetbozkan.quickfingers.data.GameMode
 import com.ahmetbozkan.quickfingers.data.GameRepository
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.util.extension.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,6 +56,7 @@ class ClassicModeViewModel @Inject constructor(
     fun onReplayClicked() {
         isStarted = false
         getRandomWord()
+
         correct.value = 0
         wrong.value = 0
         _score.value = 0
@@ -73,9 +75,9 @@ class ClassicModeViewModel @Inject constructor(
 
         return Result(
             gameMode = GameMode.CLASSIC,
-            score = score.value,
-            correct = correct.value,
-            wrong = wrong.value,
+            score = score.value.orZero(),
+            correct = correct.value.orZero(),
+            wrong = wrong.value.orZero(),
             accuracy = accuracy,
             wordsPerMinute = if (wpm >= 0) wpm else 0
         )

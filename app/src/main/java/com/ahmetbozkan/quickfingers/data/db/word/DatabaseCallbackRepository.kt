@@ -2,7 +2,7 @@ package com.ahmetbozkan.quickfingers.data.db.word
 
 import android.content.Context
 import com.ahmetbozkan.quickfingers.data.model.Word
-import com.ahmetbozkan.quickfingers.util.getJsonDataFromFile
+import com.ahmetbozkan.quickfingers.util.extension.getJsonDataFromFile
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext

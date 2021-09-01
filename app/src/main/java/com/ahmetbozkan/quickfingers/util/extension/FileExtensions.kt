@@ -1,4 +1,4 @@
-package com.ahmetbozkan.quickfingers.util
+package com.ahmetbozkan.quickfingers.util.extension
 
 import android.content.Context
 import androidx.datastore.core.DataStore

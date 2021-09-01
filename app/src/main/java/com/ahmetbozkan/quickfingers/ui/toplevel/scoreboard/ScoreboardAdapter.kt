@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ahmetbozkan.quickfingers.data.model.Result
-import com.ahmetbozkan.quickfingers.databinding.FragmentResultBinding
 import com.ahmetbozkan.quickfingers.databinding.SingleScoreboardItemBinding
 
 class ScoreboardAdapter : ListAdapter<Result, ScoreboardAdapter.ScoreboardViewHolder>(DiffCallback()) {

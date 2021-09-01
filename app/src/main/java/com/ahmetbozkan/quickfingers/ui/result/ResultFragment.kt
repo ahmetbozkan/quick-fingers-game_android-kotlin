@@ -28,7 +28,6 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
     private val args: ResultFragmentArgs by navArgs()
     private lateinit var result: Result
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentResultBinding.bind(view)

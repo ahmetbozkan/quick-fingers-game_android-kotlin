@@ -1,87 +1,118 @@
 package com.ahmetbozkan.quickfingers.ui.mode.arcade
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ahmetbozkan.quickfingers.data.GameMode
 import com.ahmetbozkan.quickfingers.data.GameRepository
-import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.util.Constants
+import com.ahmetbozkan.quickfingers.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.util.extension.orZero
 
 @HiltViewModel
 class ArcadeModeViewModel @Inject constructor(
-    private val repository: GameRepository
+    private val repository: GameRepository,
+    state: SavedStateHandle
 ) : ViewModel() {
 
-    private var timerScope: CoroutineScope = CoroutineScope(
-        viewModelScope.coroutineContext + Dispatchers.Default
-    )
+    companion object {
+        const val TIME_STATE = "time_State"
+    }
 
-    private val _trWord = MutableLiveData<String>()
-    val randomTrWord: LiveData<String> get() = _trWord
+    private var timerJob: Job? = null
 
-    private val correct = MutableLiveData(0)
-    private val wrong = MutableLiveData(0)
+    private val timePassed = MutableLiveData(Constants.INITIAL_VALUE_ZERO)
 
-    private val _score = MutableLiveData(0)
-    val score: LiveData<Int> get() = _score
-
-    private val timePassed = MutableLiveData(1)
-    private val _time = MutableLiveData(10)
+    private val _time = state.getLiveData(TIME_STATE, Constants.ARCADE_MODE_STARTING_TIME)
     val time: LiveData<Int> get() = _time
 
-    var isStarted: Boolean = false
+    private val _word = MutableLiveData<String>()
+    val word: LiveData<String> get() = _word
+
+    private val correct = MutableLiveData(Constants.INITIAL_VALUE_ZERO)
+    private val wrong = MutableLiveData(Constants.INITIAL_VALUE_ZERO)
+
+    private val _score = MutableLiveData(Constants.INITIAL_VALUE_ZERO)
+    val score: LiveData<Int> get() = _score
+
+    private var isStarted: Boolean = false
+
+    private val _isFinished = SingleLiveEvent<Boolean>()
+    val isFinished: LiveData<Boolean> get() = _isFinished
 
     init {
         getRandomWord()
     }
 
-    fun getRandomWord() = viewModelScope.launch {
-        _trWord.value = repository.getRandomWord("tr")
+    private fun getRandomWord() = viewModelScope.launch {
+        val word = repository.getRandomWord(Constants.LANGUAGE_TR)
+        _word.postValue(word)
     }
 
-    fun onEnterPressed(text: String) {
-        if (text.trim() == randomTrWord.value) {
-            correct.value = correct.value?.plus(1)
-            _score.value = _score.value?.plus(2)
-            _time.value = _time.value?.plus(1)
-        } else {
-            wrong.value = wrong.value?.plus(1)
-            _score.value = _score.value?.minus(1)
+    fun onEnterPressed(word: String) {
+        if(!isStarted) {
+            startTimer()
+            isStarted = true
         }
-    }
 
-    fun onGameStarted() {
-        isStarted = true
-        startTimer()
-    }
-
-    private fun startTimer() = timerScope.launch {
-        while (time.value!! >= 0) {
-            if(isStarted) {
-                _time.postValue(time.value!! - 1)
-                timePassed.postValue(timePassed.value!! + 1)
-                delay(1000L)
-            }
-        }
-        cancel()
-    }
-
-    fun onReplayClick() {
-        isStarted = false
         getRandomWord()
-
-        correct.value = 0
-        wrong.value = 0
-        _score.value = 0
-        timePassed.value = 0
-        _time.value = 10
+        evaluateWord(word)
     }
 
-    fun onGameFinish(): Result = calculateResult()
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while(_time.value!! > 0) {
+                decreaseTimer()
+                delay(Constants.COUNTDOWN_INTERVAL)
+            }
+
+            _isFinished.postValue(true)
+        }
+    }
+
+    private fun evaluateWord(word: String) {
+        if(word.trim() == _word.value) {
+            correct.value = (correct.value!! + 1)
+            _score.value = (_score.value!! + 2)
+            incrementTimer()
+        }
+        else {
+            wrong.value = (wrong.value!! + 1)
+            _score.value = (_score.value!! - 1)
+        }
+    }
+
+    fun onReplayClicked() {
+        timerJob?.cancel()
+        isStarted = false
+
+        resetValues()
+    }
+
+    private fun resetValues() {
+        _time.value = Constants.ARCADE_MODE_STARTING_TIME
+        correct.value = Constants.INITIAL_VALUE_ZERO
+        wrong.value = Constants.INITIAL_VALUE_ZERO
+        _score.value = Constants.INITIAL_VALUE_ZERO
+
+        getRandomWord()
+    }
+
+    private fun incrementTimer() {
+        _time.value = (_time.value!! + 1)
+    }
+
+    private fun decreaseTimer() {
+        _time.value = (_time.value!! - 1)
+        timePassed.value = (timePassed.value!! + 1)
+    }
+
+    fun onGameFinished(): Result = calculateResult()
+
 
     private fun calculateResult(): Result {
         val total = wrong.value?.plus(correct.value!!)!!
@@ -91,11 +122,11 @@ class ArcadeModeViewModel @Inject constructor(
 
         return Result(
             gameMode = GameMode.ARCADE,
-            score = score.value,
-            correct = correct.value,
-            wrong = wrong.value,
+            score = score.value.orZero(),
+            correct = correct.value.orZero(),
+            wrong = wrong.value.orZero(),
             accuracy = accuracy,
-            timePassed = timePassed.value
+            timePassed = timePassed.value.orZero()
         )
     }
 

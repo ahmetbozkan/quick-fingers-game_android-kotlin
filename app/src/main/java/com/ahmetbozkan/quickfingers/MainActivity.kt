@@ -16,6 +16,8 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ahmetbozkan.quickfingers.databinding.ActivityMainBinding
+import com.ahmetbozkan.quickfingers.util.extension.goneView
+import com.ahmetbozkan.quickfingers.util.extension.showView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,19 +77,34 @@ class MainActivity : AppCompatActivity() {
             }
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                if (destination.id != R.id.scoreboardFragment && destination.id != R.id.startGameFragment &&
-                    destination.id != R.id.settingsFragment
-                ) {
-                    bottomNavigation.isVisible = false
-                    fabPlay.isVisible = false
-                    bottomAppBar.isVisible = false
-                } else {
-                    bottomNavigation.isVisible = true
-                    bottomAppBar.isVisible = true
-                    fabPlay.isVisible = true
-                }
+                val destinationId = destination.id
 
+                if (areTopLevelScreensDisplayed(destinationId))
+                    showBottomViews()
+                 else
+                    hideBottomViews()
             }
+
+        }
+    }
+
+    private fun areTopLevelScreensDisplayed(destinationId: Int): Boolean =
+        destinationId == R.id.scoreboardFragment || destinationId == R.id.startGameFragment ||
+                destinationId == R.id.settingsFragment
+
+    private fun hideBottomViews() {
+        binding.apply {
+            fabPlay.goneView()
+            bottomAppBar.goneView()
+            bottomNavigation.goneView()
+        }
+    }
+
+    private fun showBottomViews() {
+        binding.apply {
+            fabPlay.showView()
+            bottomAppBar.showView()
+            bottomNavigation.showView()
         }
     }
 
