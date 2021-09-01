@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startGameFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.toplevel.game.StartGameFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.main.StartGameFragment"
         android:label="Quick Fingers"
         tools:layout="@layout/fragment_play" >
         <action
@@ -19,17 +19,17 @@
     </fragment>
     <fragment
         android:id="@+id/scoreboardFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.toplevel.scoreboard.ScoreboardFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.scoreboard.ScoreboardFragment"
         android:label="Scoreboard"
         tools:layout="@layout/fragment_scoreboard" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.toplevel.SettingsFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.setting.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" /><action android:id="@+id/action_global_startGameFragmet" app:destination="@id/startGameFragment"/>
     <fragment
         android:id="@+id/classicModeFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.mode.classic.ClassicModeFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.classic.ClassicModeFragment"
         android:label="Classic"
         tools:layout="@layout/fragment_classic_mode" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/howToPlayFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.HowToPlayFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.howtoplay.HowToPlayFragment"
         android:label="How to play"
         tools:layout="@layout/fragment_how_to_play" />
     <fragment
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/arcadeModeFragment"
-        android:name="com.ahmetbozkan.quickfingers.ui.mode.arcade.ArcadeModeFragment"
+        android:name="com.ahmetbozkan.quickfingers.ui.arcade.ArcadeModeFragment"
         android:label="Arcade"
         tools:layout="@layout/fragment_arcade_mode" >
         <action

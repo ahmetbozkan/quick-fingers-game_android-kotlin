@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ahmetbozkan.quickfingers.data.model.Word
+import com.ahmetbozkan.quickfingers.data.usecase.callback.ParseWordFileUseCase
 import com.ahmetbozkan.quickfingers.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -18,14 +19,14 @@ abstract class WordDatabase : RoomDatabase() {
     class Callback @Inject constructor(
         private val database: Provider<WordDatabase>,
         @ApplicationScope private val applicationScope: CoroutineScope,
-        private val repository: DatabaseCallbackRepository
+        private val useCase: ParseWordFileUseCase
     ) : RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
 
             val dao = database.get().wordDao()
-            val words = repository.words()
+            val words: List<Word> = useCase.words
 
             applicationScope.launch {
                 dao.insert(*words.toTypedArray())
