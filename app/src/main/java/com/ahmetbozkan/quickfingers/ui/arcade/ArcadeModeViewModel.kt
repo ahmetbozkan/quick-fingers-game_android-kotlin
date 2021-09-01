@@ -1,5 +1,6 @@
 package com.ahmetbozkan.quickfingers.ui.arcade
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
