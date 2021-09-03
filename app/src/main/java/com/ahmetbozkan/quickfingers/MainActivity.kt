@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private val viewModel: BaseViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
+
         setupBottomNavigation()
+
+        manageClick()
 
         viewModel.invokeDatabaseCallback()
     }
@@ -64,6 +67,20 @@ class MainActivity : AppCompatActivity() {
                 setOnItemReselectedListener {}
             }
 
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                val destinationId = destination.id
+
+                if (areTopLevelScreensDisplayed(destinationId))
+                    showBottomViews()
+                 else
+                    hideBottomViews()
+            }
+
+        }
+    }
+
+    private fun manageClick() {
+        binding.apply {
             fabPlay.setOnClickListener {
                 if (bottomNavigation.selectedItemId != R.id.startGameFragment) {
                     val action = R.id.action_global_startGameFragmet
@@ -74,16 +91,6 @@ class MainActivity : AppCompatActivity() {
                     bottomNavigation.menu[index].isChecked = false
                 }
             }
-
-            navController.addOnDestinationChangedListener { _, destination, _ ->
-                val destinationId = destination.id
-
-                if (areTopLevelScreensDisplayed(destinationId))
-                    showBottomViews()
-                 else
-                    hideBottomViews()
-            }
-
         }
     }
 
