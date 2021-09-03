@@ -5,21 +5,45 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.databinding.FragmentClassicScoreboardBinding
 import com.ahmetbozkan.quickfingers.ui.scoreboard.ScoreboardAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClassicScoreboardFragment: Fragment(R.layout.fragment_classic_scoreboard) {
+class ClassicScoreboardFragment: BaseFragment<FragmentClassicScoreboardBinding, ClassicScoreboardViewModel>() {
 
-    private var _binding: FragmentClassicScoreboardBinding? = null
-    private val binding get() = _binding!!
+    override val viewModel: ClassicScoreboardViewModel by viewModels()
 
-    private val viewModel: ClassicScoreboardViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.fragment_classic_scoreboard
+
+    @Inject
+    private lateinit var scoreboardAdapter: ScoreboardAdapter
+
+    override fun initialize(savedInstanceState: Bundle?) {
+
+        setupRecyclerView()
+
+        observeLiveData()
+
+    }
+
+    private fun setupRecyclerView() {
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            adapter = scoreboardAdapter
+        }
+    }
+
+    private fun observeLiveData() {
+        viewModel.results.observe(viewLifecycleOwner) { results ->
+            scoreboardAdapter.submitList(results)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentClassicScoreboardBinding.bind(view)
 
         val adapter = ScoreboardAdapter()
 
@@ -28,14 +52,6 @@ class ClassicScoreboardFragment: Fragment(R.layout.fragment_classic_scoreboard) 
             recyclerView.adapter = adapter
         }
 
-        viewModel.results.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
-
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

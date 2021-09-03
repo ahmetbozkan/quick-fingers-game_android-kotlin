@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ahmetbozkan.quickfingers.data.model.Result
 import com.ahmetbozkan.quickfingers.databinding.SingleScoreboardItemBinding
+import javax.inject.Inject
 
-class ScoreboardAdapter : ListAdapter<Result, ScoreboardAdapter.ScoreboardViewHolder>(DiffCallback()) {
+class ScoreboardAdapter @Inject constructor() :
+    ListAdapter<Result, ScoreboardAdapter.ScoreboardViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreboardViewHolder {
         val binding = SingleScoreboardItemBinding.inflate(
