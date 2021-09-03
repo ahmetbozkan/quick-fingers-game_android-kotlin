@@ -5,31 +5,37 @@ import android.os.CountDownTimer
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.databinding.FragmentClassicModeBinding
+import com.ahmetbozkan.quickfingers.util.Constants
+import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ClassicModeFragment : Fragment(R.layout.fragment_classic_mode) {
+class ClassicModeFragment : BaseFragment<FragmentClassicModeBinding, ClassicModeViewModel>() {
 
-    private var _binding: FragmentClassicModeBinding? = null
-    private val binding get() = _binding!!
+    override val viewModel: ClassicModeViewModel by viewModels()
 
-    private val viewModel: ClassicModeViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.fragment_classic_mode
 
     private lateinit var timer: CountDownTimer
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentClassicModeBinding.bind(view)
+    override fun initialize(savedInstanceState: Bundle?) {
 
-        timer = object : CountDownTimer(viewModel.time.value!!, 1000) {
+        initTimer()
+
+        observeLiveData()
+
+        manageEditText()
+
+    }
+
+    private fun initTimer() {
+        timer = object : CountDownTimer(viewModel.time.value!!, Constants.COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 viewModel.updateTimer(millisUntilFinished)
             }
@@ -42,63 +48,46 @@ class ClassicModeFragment : Fragment(R.layout.fragment_classic_mode) {
                 findNavController().navigate(action)
             }
         }
-
-        binding.apply {
-            viewModel.time.observe(viewLifecycleOwner) { time ->
-                textViewCountdown.text = (time / 1000).toString()
-            }
-
-            viewModel.score.observe(viewLifecycleOwner) { score ->
-                textViewScore.text = score.toString()
-            }
-
-            viewModel.randomTrWord.observe(viewLifecycleOwner) { word ->
-                textViewCurrentWord.text = word
-            }
-
-            editTextWord.setOnEditorActionListener { textView, i, _ ->
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.onEnterPressed(textView.text.toString())
-                    viewModel.getRandomWord()
-                    editTextWord.text?.clear()
-
-                    if (!viewModel.isStarted) {
-                        timer.start()
-                        viewModel.isStarted = true
-                    }
-                }
-
-                true
-            }
-        }
-
-        setHasOptionsMenu(true)
     }
+
+    private fun observeLiveData() {
+        viewModel.startTimer.observe(viewLifecycleOwner) { start ->
+            if (start)
+                timer.start()
+            else
+                timer.cancel()
+        }
+    }
+
+    private fun manageEditText() {
+        binding.editTextWord.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                viewModel.onEnterPressed(getEditTextValue())
+
+                binding.editTextWord.text?.clear()
+            }
+
+            true
+        }
+    }
+
+    private fun getEditTextValue(): String =
+        binding.editTextWord.text.toString()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_game_modes, menu)
-        menu.findItem(R.id.howToPlayFragment).isVisible = false
+        menu.hideMenuItem(R.id.howToPlayFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_replay -> {
-                if (viewModel.isStarted) {
-                    timer.cancel()
-                    viewModel.onReplayClicked()
-
-                    Toast.makeText(requireContext(), "Game restarted.", Toast.LENGTH_LONG)
-                        .show()
-                }
+                viewModel.onReplayClicked()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 }
