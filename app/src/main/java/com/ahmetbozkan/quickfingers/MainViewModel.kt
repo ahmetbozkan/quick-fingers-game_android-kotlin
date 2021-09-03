@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BaseViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val wordDao: WordDao
 ) : ViewModel() {
 

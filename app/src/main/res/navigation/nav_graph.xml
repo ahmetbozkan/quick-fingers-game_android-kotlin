@@ -9,7 +9,7 @@
         android:id="@+id/startGameFragment"
         android:name="com.ahmetbozkan.quickfingers.ui.main.StartGameFragment"
         android:label="Quick Fingers"
-        tools:layout="@layout/fragment_play" >
+        tools:layout="@layout/fragment_start_game" >
         <action
             android:id="@+id/action_startGameFragment_to_classicModeFragment"
             app:destination="@id/classicModeFragment" />

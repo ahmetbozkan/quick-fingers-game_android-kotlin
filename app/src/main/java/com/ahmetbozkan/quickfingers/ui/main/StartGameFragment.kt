@@ -1,54 +1,48 @@
 package com.ahmetbozkan.quickfingers.ui.main
 
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
-import com.ahmetbozkan.quickfingers.databinding.FragmentPlayBinding
+import com.ahmetbozkan.quickfingers.databinding.FragmentStartGameBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StartGameFragment : Fragment(R.layout.fragment_play) {
+class StartGameFragment : BaseFragment<FragmentStartGameBinding, StartGameViewModel>() {
 
-    private var _binding: FragmentPlayBinding? = null
-    private val binding get() = _binding!!
+    override val viewModel: StartGameViewModel by viewModels()
 
-    private val viewModel: StartGameViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.fragment_start_game
+
     private lateinit var currentGameMode: GameMode
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentPlayBinding.bind(view)
+    override fun initialize(savedInstanceState: Bundle?) {
 
+        collectGameMode()
+
+        manageClick()
+
+    }
+
+    private fun collectGameMode() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.preferencesFlow.collect { mode ->
                 binding.textViewGameMode.text = mode.name
                 currentGameMode = mode
             }
         }
+    }
 
+    private fun manageClick() {
         binding.apply {
             buttonStart.setOnClickListener {
-
-                val action: NavDirections = when (currentGameMode) {
-                    GameMode.CLASSIC -> {
-                        StartGameFragmentDirections.actionStartGameFragmentToClassicModeFragment()
-                    }
-                    GameMode.ARCADE -> {
-                        StartGameFragmentDirections.actionStartGameFragmentToArcadeModeFragment()
-                    }
-                    else -> {
-                        StartGameFragmentDirections.actionStartGameFragmentToClassicModeFragment()
-                    }
-                }
-                findNavController().navigate(action)
+                navigateToGame()
             }
 
             buttonPreviousGameMode.setOnClickListener {
@@ -63,11 +57,26 @@ class StartGameFragment : Fragment(R.layout.fragment_play) {
         }
     }
 
-    private fun prepareNewGameMode(next: Boolean): GameMode {
+    private fun navigateToGame() {
+        val action: NavDirections = when (currentGameMode) {
+            GameMode.CLASSIC -> {
+                StartGameFragmentDirections.actionStartGameFragmentToClassicModeFragment()
+            }
+            GameMode.ARCADE -> {
+                StartGameFragmentDirections.actionStartGameFragmentToArcadeModeFragment()
+            }
+            else -> {
+                StartGameFragmentDirections.actionStartGameFragmentToClassicModeFragment()
+            }
+        }
+        findNavController().navigate(action)
+    }
+
+    private fun prepareNewGameMode(isNext: Boolean): GameMode {
         val gameModes = GameMode.values().toList()
         var currentModeIndex = gameModes.indexOf(currentGameMode)
 
-        return if (!next) {
+        return if (!isNext) {
             if (currentModeIndex == 0) {
                 gameModes[gameModes.size - 1]
             } else {
@@ -82,8 +91,4 @@ class StartGameFragment : Fragment(R.layout.fragment_play) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

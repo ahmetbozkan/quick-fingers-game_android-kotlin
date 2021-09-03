@@ -5,37 +5,41 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.databinding.FragmentArcadeScoreboardBinding
 import com.ahmetbozkan.quickfingers.ui.scoreboard.ScoreboardAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArcadeScoreboardFragment: Fragment(R.layout.fragment_arcade_scoreboard) {
+class ArcadeScoreboardFragment :
+    BaseFragment<FragmentArcadeScoreboardBinding, ArcadeScoreboardViewModel>() {
 
-    private var _binding: FragmentArcadeScoreboardBinding? = null
-    private val binding get() = _binding!!
+    override val viewModel: ArcadeScoreboardViewModel by viewModels()
 
-    private val viewModel: ArcadeScoreboardViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.fragment_arcade_scoreboard
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentArcadeScoreboardBinding.bind(view)
+    @Inject
+    lateinit var scoreboardAdapter: ScoreboardAdapter
 
-        val adapter = ScoreboardAdapter()
+    override fun initialize(savedInstanceState: Bundle?) {
 
-        binding.apply {
-            recyclerView.setHasFixedSize(true)
-            recyclerView.adapter = adapter
-        }
+        setupRecyclerView()
 
-        viewModel.results.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        observeLiveData()
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupRecyclerView() {
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            adapter = scoreboardAdapter
+        }
+    }
+
+    private fun observeLiveData() {
+        viewModel.results.observe(viewLifecycleOwner) { results ->
+            scoreboardAdapter.submitList(results)
+        }
     }
 }

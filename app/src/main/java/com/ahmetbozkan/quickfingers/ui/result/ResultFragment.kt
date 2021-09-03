@@ -4,91 +4,82 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
 import com.ahmetbozkan.quickfingers.databinding.FragmentResultBinding
+import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ResultFragment : Fragment(R.layout.fragment_result) {
+class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
 
-    private var _binding: FragmentResultBinding? = null
-    private val binding get() = _binding!!
+    override val viewModel: ResultViewModel by viewModels()
 
-    private val viewModel: ResultViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.fragment_result
+
     private val args: ResultFragmentArgs by navArgs()
+
     private lateinit var result: Result
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentResultBinding.bind(view)
+    override fun initialize(savedInstanceState: Bundle?) {
 
+        getArgs()
+
+        manageClick()
+    }
+
+    private fun getArgs() {
         result = args.result
 
+        binding.result = result
+    }
+
+    private fun manageClick() {
         binding.apply {
-            textViewScore.text = "score: ${result.score}"
-            if (result.gameMode == GameMode.CLASSIC)
-                textViewWpmTimePassed.text = "wpm: ${result.wordsPerMinute}"
-            else textViewWpmTimePassed.text = "time passed: ${result.timePassed} sec"
-            textViewCorrect.text = result.correct.toString()
-            textViewWrong.text = result.wrong.toString()
-            textViewAccuracy.text = result.accuracy.toString()
-
             buttonPlayAgain.setOnClickListener {
-                var action: NavDirections? = null
-                when(result.gameMode) {
-                    GameMode.CLASSIC -> {
-                        action = ResultFragmentDirections.actionResultFragmentToClassicModeFragment()
-                    }
-                    GameMode.ARCADE -> {
-                        action = ResultFragmentDirections.actionResultFragmentToArcadeModeFragment()
-                    }
-                    GameMode.PARAGRAPH ->
-                        action = ResultFragmentDirections.actionResultFragmentToClassicModeFragment()
-
-                }
-                findNavController().navigate(action!!)
+                navigateToGameScreen()
             }
 
             buttonMainMenu.setOnClickListener {
-                findNavController().popBackStack()
+                popBackStack()
             }
         }
+    }
 
-        setHasOptionsMenu(true)
+    private fun navigateToGameScreen() {
+        val action: NavDirections = when (result.gameMode) {
+            GameMode.CLASSIC -> {
+                ResultFragmentDirections.actionResultFragmentToClassicModeFragment()
+            }
+            GameMode.ARCADE -> {
+                ResultFragmentDirections.actionResultFragmentToArcadeModeFragment()
+            }
+            else -> {
+                ResultFragmentDirections.actionResultFragmentToClassicModeFragment()
+            }
+
+        }
+        findNavController().navigate(action)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_result, menu)
-        menu.findItem(R.id.howToPlayFragment).isVisible = false
+        menu.hideMenuItem(R.id.howToPlayFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_save -> {
-                if (!viewModel.saved) {
-                    viewModel.onSaveClick(result)
-                    viewModel.saved = true
-
-                    Toast.makeText(requireContext(), "Result saved.", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                viewModel.onSaveClick(result)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
