@@ -69,4 +69,8 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
         findNavController().navigateUp()
     }
 
+    protected fun popBackStack() {
+        findNavController().popBackStack()
+    }
+
 }
