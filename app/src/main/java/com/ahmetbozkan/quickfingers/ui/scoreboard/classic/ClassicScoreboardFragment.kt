@@ -19,7 +19,7 @@ class ClassicScoreboardFragment: BaseFragment<FragmentClassicScoreboardBinding, 
     override fun getLayoutId(): Int = R.layout.fragment_classic_scoreboard
 
     @Inject
-    private lateinit var scoreboardAdapter: ScoreboardAdapter
+    lateinit var scoreboardAdapter: ScoreboardAdapter
 
     override fun initialize(savedInstanceState: Bundle?) {
 
@@ -40,18 +40,6 @@ class ClassicScoreboardFragment: BaseFragment<FragmentClassicScoreboardBinding, 
         viewModel.results.observe(viewLifecycleOwner) { results ->
             scoreboardAdapter.submitList(results)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val adapter = ScoreboardAdapter()
-
-        binding.apply {
-            recyclerView.setHasFixedSize(true)
-            recyclerView.adapter = adapter
-        }
-
     }
 
 }

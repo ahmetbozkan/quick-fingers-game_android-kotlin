@@ -48,7 +48,6 @@ class ScoreboardFragment : BaseFragment<FragmentScoreboardBinding, ScoreboardVie
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.viewPager.adapter = null
         mediator.detach()
     }
 }
