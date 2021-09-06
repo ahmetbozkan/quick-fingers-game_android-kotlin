@@ -70,7 +70,6 @@ class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_result, menu)
-        menu.hideMenuItem(R.id.howToPlayFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -2,6 +2,7 @@ package com.ahmetbozkan.quickfingers.base
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.ahmetbozkan.quickfingers.BR
+import com.ahmetbozkan.quickfingers.ui.main.StartGameFragment
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
 
@@ -40,7 +42,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
 
         initialize(savedInstanceState)
 
-       // manageBackButton()
+        manageBackButton()
 
         setHasOptionsMenu(true)
     }
@@ -49,7 +51,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
         binding.setVariable(BR.viewModel, viewModel)
     }
 
-    /*private fun manageBackButton() {
+    private fun manageBackButton() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if(this@BaseFragment is StartGameFragment) {
                 requireActivity().finish()
@@ -58,7 +60,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
                 navigateBack()
             }
         }
-    }*/
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

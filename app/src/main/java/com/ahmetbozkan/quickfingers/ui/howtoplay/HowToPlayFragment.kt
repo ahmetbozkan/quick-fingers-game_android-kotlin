@@ -2,20 +2,27 @@ package com.ahmetbozkan.quickfingers.ui.howtoplay
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import androidx.fragment.app.Fragment
+import android.view.MenuInflater
+import androidx.fragment.app.viewModels
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
+import com.ahmetbozkan.quickfingers.databinding.FragmentHowToPlayBinding
+import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 
-class HowToPlayFragment: Fragment(R.layout.fragment_how_to_play) {
+class HowToPlayFragment : BaseFragment<FragmentHowToPlayBinding, HowToPlayViewModel>() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override val viewModel: HowToPlayViewModel by viewModels()
 
-        setHasOptionsMenu(true)
+    override fun getLayoutId(): Int = R.layout.fragment_how_to_play
+
+    override fun initialize(savedInstanceState: Bundle?) {
+        // nothing
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.howToPlayFragment).isVisible = false
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.hideMenuItem(R.id.howToPlayFragment)
     }
+
+
 }

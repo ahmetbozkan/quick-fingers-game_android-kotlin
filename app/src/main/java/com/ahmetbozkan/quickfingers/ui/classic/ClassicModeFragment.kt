@@ -76,7 +76,6 @@ class ClassicModeFragment : BaseFragment<FragmentClassicModeBinding, ClassicMode
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_game_modes, menu)
-        menu.hideMenuItem(R.id.howToPlayFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

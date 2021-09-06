@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ahmetbozkan.quickfingers.databinding.ActivityMainBinding
 import com.ahmetbozkan.quickfingers.util.extension.goneView
+import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 import com.ahmetbozkan.quickfingers.util.extension.showView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val viewModel: MainViewModel by viewModels()
+
+    // starting destination is startGameFragment by default
+    private var destinationId: Int = R.id.startGameFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                val destinationId = destination.id
+                destinationId = destination.id
 
                 if (areTopLevelScreensDisplayed(destinationId))
                     showBottomViews()
@@ -116,6 +120,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main_activity, menu)
+
+        if(!areTopLevelScreensDisplayed(destinationId))
+            menu?.hideMenuItem(R.id.howToPlayFragment)
+
         return true
     }
 

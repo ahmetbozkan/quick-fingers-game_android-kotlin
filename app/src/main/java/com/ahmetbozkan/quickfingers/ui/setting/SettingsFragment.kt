@@ -1,10 +1,20 @@
 package com.ahmetbozkan.quickfingers.ui.setting
 
-import androidx.fragment.app.Fragment
+import android.os.Bundle
+import androidx.fragment.app.viewModels
 import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.base.BaseFragment
+import com.ahmetbozkan.quickfingers.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
-class SettingsFragment: Fragment(R.layout.fragment_settings) {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>() {
+
+    override val viewModel: SettingsViewModel by viewModels()
+
+    override fun getLayoutId(): Int = R.layout.fragment_settings
+
+    override fun initialize(savedInstanceState: Bundle?) {
+        // nothing
+    }
 }
