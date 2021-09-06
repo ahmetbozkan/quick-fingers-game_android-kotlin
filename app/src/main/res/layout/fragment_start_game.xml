@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
         tools:context=".ui.main.StartGameFragment">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/start" />
+            android:text="@string/start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_previous_game_mode"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/button_start"
-            android:layout_marginTop="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_previous_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_game_mode"
+            app:layout_constraintEnd_toStartOf="@id/text_view_game_mode"
+            app:layout_constraintTop_toTopOf="@id/text_view_game_mode" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_game_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:text="classic"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="@id/button_start"
+            app:layout_constraintStart_toStartOf="@id/button_start"
+            app:layout_constraintTop_toBottomOf="@id/button_start" />
 
-            <ImageButton
-                android:id="@+id/button_previous_game_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_previous_arrow" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_next_game_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_next_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_game_mode"
+            app:layout_constraintStart_toEndOf="@id/text_view_game_mode"
+            app:layout_constraintTop_toTopOf="@id/text_view_game_mode" />
 
-            <TextView
-                android:id="@+id/text_view_game_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="classic"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <ImageButton
-                android:id="@+id/button_next_game_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_next_arrow" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
