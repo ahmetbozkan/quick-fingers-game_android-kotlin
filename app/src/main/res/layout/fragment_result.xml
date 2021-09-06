@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.result.ResultFragment">
 
     <data>
 
@@ -8,200 +11,94 @@
             type="com.ahmetbozkan.quickfingers.data.model.Result" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="8dp"
-        tools:context=".ui.result.ResultFragment">
+        android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_score"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_score"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_score"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_score"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:text="@{`Score: ` + result.score}"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_score"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_score"
+            app:layout_constraintTop_toTopOf="@+id/image_view_score"
+            tools:text="Score: 24" />
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_score" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_wpm_time_passed"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_time"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_wpm_time_passed"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_view_score" />
 
-            <TextView
-                android:id="@+id/text_view_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@{`Score:` + result.score}"
-                android:textSize="32sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_wpm_time_passed"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_wpm_time_passed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_wpm_time_passed"
+            app:layout_constraintTop_toTopOf="@+id/image_view_wpm_time_passed"
+            app:setWpmOrTimePassed="@{result}"
+            tools:text="words per minute: 10" />
 
-            <ImageView
-                android:id="@+id/image_view_wpm_time_passed"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_time" />
-
-            <TextView
-                android:id="@+id/text_view_wpm_time_passed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:setWpmOrTimePassed="@{result}"
-                android:textSize="32sp"
-                tools:text="words per minute: 10" />
-
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
+        <include
+            android:id="@+id/layout_result_board"
+            layout="@layout/layout_result_board"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="4dp">
+            android:layout_height="85dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/text_view_wpm_time_passed" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="4dp"
-                        android:padding="8dp"
-                        android:text="correct"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        app:drawableStartCompat="@drawable/ic_correct" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/black" />
-
-                    <TextView
-                        android:id="@+id/text_view_correct"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{result.correct.toString()}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        tools:text="10" />
-
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="4dp"
-                        android:padding="8dp"
-                        android:text="wrong"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        app:drawableStartCompat="@drawable/ic_wrong" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/black" />
-
-                    <TextView
-                        android:id="@+id/text_view_wrong"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{result.wrong.toString()}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        tools:text="4" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="4dp"
-                        android:padding="8dp"
-                        android:text="% accuracy"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/black" />
-
-                    <TextView
-                        android:id="@+id/text_view_accuracy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{`%` + result.accuracy}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        tools:text="%32.45" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_play_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:text="PLAY AGAIN" />
+            android:text="PLAY AGAIN"
+            app:layout_constraintBottom_toTopOf="@+id/button_main_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_result_board"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_main_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="MAIN MENU" />
+            android:text="MAIN MENU"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_play_again" />
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

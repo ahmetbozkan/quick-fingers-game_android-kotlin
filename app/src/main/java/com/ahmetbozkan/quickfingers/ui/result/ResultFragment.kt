@@ -38,6 +38,7 @@ class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
         result = args.result
 
         binding.result = result
+        binding.layoutResultBoard.result = result
     }
 
     private fun manageClick() {
