@@ -13,7 +13,6 @@ import com.ahmetbozkan.quickfingers.base.BaseFragment
 import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
 import com.ahmetbozkan.quickfingers.databinding.FragmentResultBinding
-import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

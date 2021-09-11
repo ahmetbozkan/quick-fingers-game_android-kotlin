@@ -15,7 +15,7 @@ import com.ahmetbozkan.quickfingers.ui.main.StartGameFragment
 abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
 
     private var _binding: DB? = null
-    val binding: DB get() = _binding!!
+    protected val binding: DB get() = _binding!!
 
     protected abstract val viewModel: VM
 
