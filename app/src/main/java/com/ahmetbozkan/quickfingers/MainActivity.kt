@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             fabPlay.setOnClickListener {
                 if (bottomNavigation.selectedItemId != R.id.startGameFragment) {
-                    val action = R.id.action_global_startGameFragmet
+                    val action = NavGraphDirections.actionGlobalStartGameFragmet()
                     navController.navigate(action)
                 }
 

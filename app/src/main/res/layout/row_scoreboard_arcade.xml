@@ -161,7 +161,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="@{Integer.toString(result.timePassed) + `sec.`}"
+                android:text="@{Integer.toString(result.timePassed) + ` sec.`}"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 tools:text="16 sec" />
@@ -185,6 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Accuracy"
+                android:maxLines="1"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
