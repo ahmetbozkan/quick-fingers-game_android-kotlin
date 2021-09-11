@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="result"
+            type="com.ahmetbozkan.quickfingers.data.model.Result" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/lin_layout_correct"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#42A458"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintEnd_toStartOf="@+id/lin_layout_wrong"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Correct"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_correct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@{Integer.toString(result.correct)}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_layout_wrong"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#A44242"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_correct"
+            app:layout_constraintEnd_toStartOf="@+id/lin_layout_score"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lin_layout_correct"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_correct"
+            tools:layout_editor_absoluteY="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Wrong"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_wrong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@{Integer.toString(result.wrong)}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_layout_score"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#87A9B4"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_correct"
+            app:layout_constraintEnd_toStartOf="@+id/lin_layout_wpm"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lin_layout_wrong"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_correct"
+            tools:layout_editor_absoluteY="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Score"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@{Integer.toString(result.score)}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_layout_wpm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#3B9CB1"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_correct"
+            app:layout_constraintEnd_toStartOf="@+id/lin_layout_accuracy"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lin_layout_score"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_correct"
+            tools:layout_editor_absoluteY="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Wpm"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_wpm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@{Integer.toString(result.wordsPerMinute)}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_layout_accuracy"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#244A5A"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lin_layout_wpm"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Accuracy"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_accuracy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@{Double.toString(result.accuracy)}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="%20" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#87A9B4"
+            android:gravity="center"
+            android:text="@{result.dateSavedFormatted}"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_accuracy"
+            app:layout_constraintStart_toStartOf="@id/lin_layout_correct"
+            app:layout_constraintTop_toBottomOf="@id/lin_layout_correct"
+            tools:text="7 Haziran 2021 20.00" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

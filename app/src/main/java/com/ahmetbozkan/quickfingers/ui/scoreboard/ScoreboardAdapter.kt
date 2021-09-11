@@ -2,49 +2,87 @@ package com.ahmetbozkan.quickfingers.ui.scoreboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ahmetbozkan.quickfingers.R
+import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
-import com.ahmetbozkan.quickfingers.databinding.SingleScoreboardItemBinding
+import com.ahmetbozkan.quickfingers.databinding.RowScoreboardArcadeBinding
+import com.ahmetbozkan.quickfingers.databinding.RowScoreboardClassicBinding
 import javax.inject.Inject
 
 class ScoreboardAdapter @Inject constructor() :
-    ListAdapter<Result, ScoreboardAdapter.ScoreboardViewHolder>(DiffCallback()) {
+    ListAdapter<Result, RecyclerView.ViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreboardViewHolder {
-        val binding = SingleScoreboardItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-
-        return ScoreboardViewHolder(binding)
+    companion object {
+        private const val VIEW_TYPE_CLASSIC = 1
+        private const val VIEW_TYPE_ARCADE = 2
     }
 
-    override fun onBindViewHolder(holder: ScoreboardViewHolder, position: Int) {
-        val currentItem = getItem(position)
-
-        if (currentItem != null) {
-            holder.bind(result = currentItem)
-        }
-    }
-
-    inner class ScoreboardViewHolder(private val binding: SingleScoreboardItemBinding) :
+    inner class ClassicScoreboardViewHolder(private val binding: RowScoreboardClassicBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: Result) {
-            binding.apply {
-                textViewCorrect.text = result.correct.toString()
-                textViewWrong.text = result.wrong.toString()
-                textViewScore.text = result.score.toString()
-                textViewWpm.text = result.wordsPerMinute.toString()
-                textViewAccuracy.text = "%${result.accuracy}"
-                textViewDate.text = result.dateSavedFormatted
-            }
+            binding.result = result
+        }
+    }
+
+    inner class ArcadeScoreboardViewHolder(private val binding: RowScoreboardArcadeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(result: Result) {
+            binding.result = result
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+
+        return if (item != null && item.gameMode == GameMode.CLASSIC) {
+            VIEW_TYPE_CLASSIC
+        } else {
+            VIEW_TYPE_ARCADE
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_CLASSIC) {
+            ClassicScoreboardViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.row_scoreboard_classic,
+                    parent,
+                    false
+                )
+            )
+        } else {
+            ArcadeScoreboardViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.row_scoreboard_arcade,
+                    parent,
+                    false
+                )
+            )
         }
 
     }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val currentItem = getItem(position)
+
+        when (holder.itemViewType) {
+            VIEW_TYPE_CLASSIC -> {
+                (holder as ClassicScoreboardViewHolder).bind(result = currentItem)
+            }
+            VIEW_TYPE_ARCADE -> {
+                (holder as ArcadeScoreboardViewHolder).bind(result = currentItem)
+            }
+        }
+    }
+
 
     class DiffCallback : DiffUtil.ItemCallback<Result>() {
         override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean =

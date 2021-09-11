@@ -10,51 +10,51 @@
             type="com.ahmetbozkan.quickfingers.ui.classic.ClassicModeViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="24dp"
-        tools:context=".ui.classic.ClassicModeFragment">
+        android:padding="24dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_time"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_time"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_countdown"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_countdown"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            app:millisToSeconds="@{viewModel.time}"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_time"
+            app:layout_constraintTop_toTopOf="@+id/image_view_time"
+            tools:text="60" />
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_time" />
-
-            <TextView
-                android:id="@+id/text_view_countdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:millisToSeconds="@{viewModel.time}"
-                android:textSize="32sp"
-                tools:text="60" />
-
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:cardCornerRadius="4dp">
+            app:cardCornerRadius="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_time">
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
@@ -66,9 +66,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:background="@color/black" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/text_view_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,33 +78,30 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     tools:text="12" />
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_current_word"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{viewModel.word.toString()}"
             android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_view_current_word"
-                android:layout_width="wrap_content"
-                android:text="@{viewModel.word.toString()}"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                tools:text="dervis" />
-
-        </LinearLayout>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            tools:text="dervis" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="Enter word">
+            android:layout_marginTop="16dp"
+            android:hint="Enter word"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_current_word"
+            tools:layout_editor_absoluteX="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_word"
@@ -113,6 +112,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
