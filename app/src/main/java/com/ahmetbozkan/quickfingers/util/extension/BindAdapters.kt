@@ -2,8 +2,8 @@ package com.ahmetbozkan.quickfingers.util.extension
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 
 /**
  * turns milliseconds value and turns it to seconds (1000 millis -> 1 sec)

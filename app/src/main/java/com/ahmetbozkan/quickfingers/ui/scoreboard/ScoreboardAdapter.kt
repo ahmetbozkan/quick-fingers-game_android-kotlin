@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ahmetbozkan.quickfingers.R
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import com.ahmetbozkan.quickfingers.databinding.RowScoreboardArcadeBinding
 import com.ahmetbozkan.quickfingers.databinding.RowScoreboardClassicBinding
 import javax.inject.Inject

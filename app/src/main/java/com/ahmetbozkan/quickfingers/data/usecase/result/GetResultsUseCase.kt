@@ -1,8 +1,8 @@
 package com.ahmetbozkan.quickfingers.data.usecase.result
 
 import androidx.lifecycle.LiveData
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.repository.result.ResultRepository
 import javax.inject.Inject
 

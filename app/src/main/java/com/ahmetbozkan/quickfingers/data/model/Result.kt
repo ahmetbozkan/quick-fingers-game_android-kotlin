@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import kotlinx.android.parcel.Parcelize
 import java.text.DateFormat
 

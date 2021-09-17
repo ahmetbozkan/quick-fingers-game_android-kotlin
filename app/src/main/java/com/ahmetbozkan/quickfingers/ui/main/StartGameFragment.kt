@@ -7,7 +7,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.ahmetbozkan.quickfingers.R
 import com.ahmetbozkan.quickfingers.base.BaseFragment
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import com.ahmetbozkan.quickfingers.databinding.FragmentStartGameBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

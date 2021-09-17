@@ -1,13 +1,13 @@
 package com.ahmetbozkan.quickfingers.data.usecase.preference
 
-import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
+import com.ahmetbozkan.quickfingers.data.model.preference.AppInfo
 import com.ahmetbozkan.quickfingers.data.repository.preference.PreferencesManagerRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class UpdateGameModeUseCase @Inject constructor(
+class GetAppInfoFlowUseCase @Inject constructor(
     private val repository: PreferencesManagerRepository
 ) {
 
-    suspend operator fun invoke(gameMode: GameMode) =
-        repository.updateGameMode(gameMode)
+    operator fun invoke(): Flow<AppInfo> = repository.appInfoFlow
 }

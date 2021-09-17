@@ -1,8 +1,8 @@
 package com.ahmetbozkan.quickfingers.ui.classic
 
 import androidx.lifecycle.*
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.usecase.word.GetWordUseCase
 import com.ahmetbozkan.quickfingers.util.Constants
 import com.ahmetbozkan.quickfingers.util.extension.formatEndingDecimals
@@ -48,31 +48,31 @@ class ClassicModeViewModel @Inject constructor(
     }
 
     fun onEnterPressed(word: String) {
-        if(!isStarted) {
+        getRandomWord()
+        evaluateWordInput(word)
+
+        if (!isStarted) {
             _startTimer.postValue(true)
             isStarted = true
         }
-
-        getRandomWord()
-        evaluateWordInput(word)
     }
 
     private fun evaluateWordInput(word: String) {
         if (word.trim() == _word.value) {
-            correct.value = (correct.value!! + 1)
-            _score.value = (_score.value!! + 2)
+            correct.postValue(correct.value!! + 1)
+            _score.postValue(_score.value!! + 2)
         } else {
-            wrong.value = (wrong.value!! + 1)
-            _score.value = (_score.value!! - 1)
+            wrong.postValue(wrong.value!! + 1)
+            _score.postValue(_score.value!! - 1)
         }
     }
 
     fun updateTimer(millisUntilFinished: Long) {
-        _time.value = millisUntilFinished
+        _time.postValue(millisUntilFinished)
     }
 
     fun onReplayClicked() {
-        if(isStarted) {
+        if (isStarted) {
             _startTimer.postValue(false)
             isStarted = false
         }

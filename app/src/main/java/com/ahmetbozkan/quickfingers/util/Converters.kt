@@ -1,7 +1,7 @@
 package com.ahmetbozkan.quickfingers.util
 
 import androidx.room.TypeConverter
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 
 class Converters {
 

@@ -21,4 +21,7 @@ interface WordDao {
         language: String
     ): String
 
+    @Query("SELECT COUNT(word) FROM words")
+    fun getWordCount(): LiveData<Int>
+
 }

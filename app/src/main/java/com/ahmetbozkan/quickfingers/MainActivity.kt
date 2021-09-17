@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEachIndexed
 import androidx.core.view.get
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,8 @@ import com.ahmetbozkan.quickfingers.util.extension.goneView
 import com.ahmetbozkan.quickfingers.util.extension.hideMenuItem
 import com.ahmetbozkan.quickfingers.util.extension.showView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -44,7 +47,34 @@ class MainActivity : AppCompatActivity() {
 
         manageClick()
 
-        viewModel.invokeDatabaseCallback()
+        collectAppInfo()
+
+    }
+
+    private fun collectAppInfo() {
+        lifecycleScope.launch {
+            val wordsDownloaded = viewModel.appInfo.first().wordsDownloaded
+
+            if (!wordsDownloaded) {
+                observeWordCount()
+            }
+            else {
+                binding.progressBar.goneView()
+            }
+        }
+    }
+
+    private fun observeWordCount() {
+        viewModel.wordCount.observe(this) { count ->
+            if (count > 10000) {
+                onWordsDownloaded()
+                binding.progressBar.goneView()
+            }
+        }
+    }
+
+    private fun onWordsDownloaded() = lifecycleScope.launch {
+        viewModel.updateWordsDownloaded(true)
     }
 
     private fun setupToolbar() {
@@ -76,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (areTopLevelScreensDisplayed(destinationId))
                     showBottomViews()
-                 else
+                else
                     hideBottomViews()
             }
 
@@ -121,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main_activity, menu)
 
-        if(!areTopLevelScreensDisplayed(destinationId))
+        if (!areTopLevelScreensDisplayed(destinationId))
             menu?.hideMenuItem(R.id.howToPlayFragment)
 
         return true

@@ -1,39 +1,29 @@
 package com.ahmetbozkan.quickfingers.data.db.preference
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.ahmetbozkan.quickfingers.util.extension.dataStore
+import com.ahmetbozkan.quickfingers.data.model.preference.AppInfo
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
+import com.ahmetbozkan.quickfingers.util.extension.appInfoDataStore
+import com.ahmetbozkan.quickfingers.util.extension.gameModeDataStore
+import com.ahmetbozkan.quickfingers.util.extension.handleException
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
-
-private const val TAG = "PreferencesManagerImpl"
-
-enum class GameMode { CLASSIC, ARCADE, PARAGRAPH }
 
 @Singleton
 class PreferencesManager @Inject constructor(@ApplicationContext context: Context) {
 
-    private val dataStore: DataStore<Preferences> = context.dataStore
+    private val gameModeStore: DataStore<Preferences> = context.gameModeDataStore
 
-    val preferencesFlow = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                Log.e(TAG, "Error reading preferences.", exception)
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
+    private val appInfoStore: DataStore<Preferences> = context.appInfoDataStore
 
-        }
+    val gameModePreferencesFlow = gameModeStore.handleException()
         .map { preferences ->
             val gameMode = GameMode.valueOf(
                 preferences[PreferencesKeys.GAME_MODE] ?: GameMode.CLASSIC.name
@@ -41,13 +31,28 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
             gameMode
         }
 
+    val appInfoFlow = appInfoStore.handleException()
+        .map { preferences ->
+            val wordsDownloaded = preferences[PreferencesKeys.WORDS_DOWNLOADED] ?: false
+
+            AppInfo(wordsDownloaded = wordsDownloaded)
+        }
+
+
     suspend fun updateGameMode(mode: GameMode) {
-        dataStore.edit { preferences ->
+        gameModeStore.edit { preferences ->
             preferences[PreferencesKeys.GAME_MODE] = mode.name
         }
     }
 
-    private object PreferencesKeys {
-        val GAME_MODE = stringPreferencesKey("game_mode")
+    suspend fun updateWordsDownloaded(downloaded: Boolean) {
+        appInfoStore.edit { preferences ->
+            preferences[PreferencesKeys.WORDS_DOWNLOADED] = downloaded
+        }
     }
+}
+
+private object PreferencesKeys {
+    val GAME_MODE = stringPreferencesKey("game_mode")
+    val WORDS_DOWNLOADED = booleanPreferencesKey("words_downloaded")
 }

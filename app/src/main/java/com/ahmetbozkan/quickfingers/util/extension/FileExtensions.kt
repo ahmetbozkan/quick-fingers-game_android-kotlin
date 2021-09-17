@@ -1,12 +1,7 @@
 package com.ahmetbozkan.quickfingers.util.extension
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import java.io.IOException
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "game_modes")
 
 fun getJsonDataFromFile(context: Context, fileName: String): String? {
     val value: String

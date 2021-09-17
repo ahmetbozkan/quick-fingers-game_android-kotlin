@@ -1,9 +1,8 @@
 package com.ahmetbozkan.quickfingers.ui.arcade
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.ahmetbozkan.quickfingers.data.db.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.model.Result
+import com.ahmetbozkan.quickfingers.data.model.preference.GameMode
 import com.ahmetbozkan.quickfingers.data.usecase.word.GetWordUseCase
 import com.ahmetbozkan.quickfingers.util.Constants
 import com.ahmetbozkan.quickfingers.util.SingleLiveEvent
